@@ -1,0 +1,32 @@
+{
+  "name": "auth-service-v1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run clean && mkdir -p dist && babel src -D -d dist --source-maps inline",
+    "clean": "rm -rf dist",
+    "dev": "nodemon --exec babel-node src/index.js"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.2",
+    "dotenv": "^5.0.1",
+    "errorhandler": "^1.5.0",
+    "express": "^4.16.2",
+    "express-validator": "^5.0.3",
+    "jsonwebtoken": "^8.2.0",
+    "mongodb": "^3.0.3",
+    "mongoose": "^5.0.7",
+    "mongoose-unique-validator": "^2.0.0",
+    "morgan": "^1.9.0",
+    "validator": "^9.4.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.17.1"
+  }
+}
