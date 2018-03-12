@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt-nodejs";
 import uniqueValidator from "mongoose-unique-validator";
+import jwt from "jsonwebtoken";
 import validator from "validator";
 
 const AuthSchema = new Schema({
@@ -23,7 +24,15 @@ const AuthSchema = new Schema({
     required: true,
     minlength: 6,
     trim: true
-  }
+  },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 });
 
 AuthSchema.plugin(uniqueValidator, {
@@ -52,7 +61,6 @@ AuthSchema.pre("save", function(next) {
   });
 });
 
-//
 AuthSchema.statics.findByCredentials = function(email, password) {
   return this.findOne({ email }).then(user => {
     if (!user) {
@@ -69,6 +77,20 @@ AuthSchema.statics.findByCredentials = function(email, password) {
       });
     });
   });
+};
+
+AuthSchema.methods.generateToken = function() {
+  const user = this;
+  let token = jwt.sign(
+    {
+      _id: user._id
+    },
+    process.env.SECRET_KEY
+  );
+
+  user.tokens.push({ token });
+
+  return user.save().then(() => token);
 };
 
 export default mongoose.model("Auth", AuthSchema);

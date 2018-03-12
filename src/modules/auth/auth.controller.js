@@ -40,7 +40,9 @@ export const signUp = async (req, res) => {
       });
     }
 
-    return res.json({
+    const token = await user.generateToken();
+
+    return res.header("auth", token).json({
       status: "success",
       data: user,
       error: null
