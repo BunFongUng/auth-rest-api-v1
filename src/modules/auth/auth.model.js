@@ -32,6 +32,7 @@ AuthSchema.plugin(uniqueValidator, {
 
 // hash user password before save in db.
 AuthSchema.pre("save", function(next) {
+  const user = this;
   if (!this.isModified("password")) {
     return next();
   }
@@ -41,11 +42,11 @@ AuthSchema.pre("save", function(next) {
       return next(err);
     }
 
-    bcrypt.hash(this.password, salt, (err, hash) => {
+    bcrypt.hash(user.password, salt, undefined, (err, hash) => {
       if (err) {
         return next(err);
       }
-      this.password = hash;
+      user.password = hash;
       next();
     });
   });
